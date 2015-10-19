@@ -44,4 +44,9 @@
 		<origin xyz="0 0 2" rpy="0 3.14 0"/>
 	</xacro:kuka_lwr>
 
+	<xacro:include filename="$(find lwr_testing)/sensors/asus_xtion_camera.urdf.xacro" />
+
+ 
+
+
 </robot>
