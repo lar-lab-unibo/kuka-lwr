@@ -5,13 +5,13 @@ project(lwr_hw)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
   control_toolbox
   controller_interface
   controller_manager
   hardware_interface
   realtime_tools
   joint_limits_interface
-  roscpp
   tf
   urdf
   cmake_modules
@@ -26,13 +26,13 @@ add_definitions (-fpermissive -std=c++11)
 
 catkin_package(
   CATKIN_DEPENDS
+    roscpp
     control_toolbox
     controller_interface
     controller_manager
     hardware_interface
     realtime_tools
     joint_limits_interface
-    roscpp
     tf
     urdf
     cmake_modules
@@ -64,7 +64,7 @@ target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
-## REAL 
+## REAL
 # KUKA FRI library
 add_library(friremote
   src/fri/friremote.cpp
@@ -76,7 +76,7 @@ add_executable(lwr_hw_fri_node  src/lwr_hw_fri_node.cpp
 )
 add_dependencies(lwr_hw_fri_node
   friremote
-  ${PROJECT_NAME} 
+  ${PROJECT_NAME}
 )
 target_link_libraries(lwr_hw_fri_node
   friremote
@@ -104,7 +104,7 @@ add_executable(lwr_hw_fril_node  src/lwr_hw_fril_node.cpp
 )
 add_dependencies(lwr_hw_fril_node
   FRILibrary
-  ${PROJECT_NAME} 
+  ${PROJECT_NAME}
 )
 target_link_libraries(lwr_hw_fril_node
   fril
@@ -113,7 +113,7 @@ target_link_libraries(lwr_hw_fril_node
 )
 
 ## SIMULATION
-# lwr hw sim gazebo plugin 
+# lwr hw sim gazebo plugin
 find_package(gazebo REQUIRED)
 include_directories(${GAZEBO_INCLUDE_DIRS})
 link_directories(${GAZEBO_LIBRARY_DIRS})

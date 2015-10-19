@@ -9,7 +9,7 @@
 
 #include <math.h>
 
-namespace lwr_controllers 
+namespace lwr_controllers
 {
     OneTaskInverseKinematics::OneTaskInverseKinematics() {}
     OneTaskInverseKinematics::~OneTaskInverseKinematics() {}
@@ -101,7 +101,7 @@ namespace lwr_controllers
                 joint_des_states_.qdot(i) = 0.0;
                 for (int k = 0; k < J_pinv_.cols(); k++)
                     joint_des_states_.qdot(i) += J_pinv_(i,k)*x_err_(k); //removed scaling factor of .7
-          
+
             }
 
             // integrating q_dot -> getting q (Euler method)
