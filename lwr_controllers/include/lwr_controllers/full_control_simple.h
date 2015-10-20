@@ -16,6 +16,9 @@
 #include <boost/thread/condition.hpp>
 #include <sstream>
 
+#define LWR_CONTROLLERS_FULL_CONTROL_SIMPLE_MODE_CARTESIAN 100
+#define LWR_CONTROLLERS_FULL_CONTROL_SIMPLE_MODE_JOINTS 102
+
 namespace lwr_controllers
 {
 	class FullControlSimple: public controller_interface::KinematicChainControllerBase<hardware_interface::PositionJointInterface>
@@ -34,6 +37,11 @@ namespace lwr_controllers
 		ros::Subscriber sub_command_;
 		ros::Subscriber sub_command_joints_;
 		ros::Subscriber sub_gains_;
+		ros::Publisher pub_current_pose;
+
+		int control_mode;
+
+		PoseRPY current_pose_;
 
 		KDL::Frame x_;		//current pose
 		KDL::Frame x_des_;	//desired pose

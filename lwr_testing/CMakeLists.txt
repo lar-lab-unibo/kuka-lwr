@@ -73,5 +73,5 @@ catkin_package(
 
 # lwr hw fri node
 add_executable(lwr_test  src/lwr_test.cpp)
-target_link_libraries(lwr_test ${catkin_LIBRARIES})
+target_link_libraries(lwr_test ${catkin_LIBRARIES} ${OpenCV_LIBS} ${PCL_LIBRARIES})
 #add_dependencies(lwr_test lwr_testing_generate_messages_cpp)

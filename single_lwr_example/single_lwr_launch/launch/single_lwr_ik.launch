@@ -35,6 +35,7 @@
 	</node>
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
+
 	<group if="$(arg use_rviz)">
 		<node name="lwr_rviz" pkg="rviz" type="rviz" respawn="false" args="-d $(find single_lwr_launch)/launch/rviz_config.rviz" output="screen"/>
 	</group>
