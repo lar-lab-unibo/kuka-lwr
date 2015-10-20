@@ -2,12 +2,12 @@ lwr:
   # CONTROLLERS USED IN THE EXAMLE
   joint_state_controller:
     type: joint_state_controller/JointStateController
-    publish_rate: 100  
+    publish_rate: 100
 
   # THIS CONFIGURATION IS ACTUALLY SENDING TAU = K*Q
   joint_trajectory_controller:
     type: position_controllers/JointTrajectoryController
-    joints: 
+    joints:
       - lwr_0_joint
       - lwr_1_joint
       - lwr_2_joint
@@ -56,6 +56,12 @@ lwr:
   # One Task Inverse Kinematics
   one_task_inverse_kinematics:
     type: lwr_controllers/OneTaskInverseKinematics
+    root_name: lwr_base_link
+    tip_name: lwr_7_link
+
+  # One Task Inverse Kinematics
+  full_control_simple:
+    type: lwr_controllers/FullControlSimple
     root_name: lwr_base_link
     tip_name: lwr_7_link
 

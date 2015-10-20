@@ -46,7 +46,7 @@ catkin_package(
 )
 
 add_library(${PROJECT_NAME}
-  src/joint_impedance_controller.cpp	
+  src/joint_impedance_controller.cpp
   src/inverse_dynamics_controller.cpp
   src/computed_torque_controller.cpp
   src/one_task_inverse_kinematics.cpp
@@ -58,6 +58,7 @@ add_library(${PROJECT_NAME}
   src/dynamic_sliding_mode_controller_task_space.cpp
   src/one_task_inverse_dynamics_jl.cpp
   src/gravity_compensation.cpp
+  src/full_control_simple.cpp
 )
 
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencpp)

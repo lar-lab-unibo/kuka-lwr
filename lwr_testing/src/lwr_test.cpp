@@ -20,7 +20,7 @@ main (int argc, char** argv)
         ros::NodeHandle nh;
 
 
-        ros::Publisher pose_publisher = nh.advertise<lwr_controllers::PoseRPY>("/lwr/one_task_inverse_kinematics/command", 1);
+        ros::Publisher pose_publisher = nh.advertise<lwr_controllers::PoseRPY>("/lwr/full_control_simple/command", 1);
         ros::Publisher joints_publisher = nh.advertise<trajectory_msgs::JointTrajectory>("/lwr/joint_trajectory_controller/command", 1);
 
         lwr_controllers::PoseRPY pose;
@@ -41,37 +41,45 @@ main (int argc, char** argv)
         traj.points[0] = point;
         traj.points[0].time_from_start = ros::Duration(0.1);
         traj.points[0].positions.resize(7);
-        for(int i = 0; i < 7 ; i++){
-            traj.points[0].positions[i] = 0.0f;
+        for(int i = 0; i < 7; i++) {
+                traj.points[0].positions[i] = 0.0f;
         }
 
 
 
         std::cout << traj <<std::endl;
-        float x,y,z;
+        float x,y,z,roll,pitch,yaw;
         char c;
 
         int t = 0;
         float f = 0.00002f;
         // Spin
         while( ros::ok()) {
-                /*cout << "Command: ";
+                cout << "Command: ";
                 cin >> c;
 
                 if(c=='q') break;
 
                 cout << "Position: ";
                 cin >> x;
-                */
+                cin >> y;
+                cin >> z;
+                cin >> roll;
+                cin >> pitch;
+                cin >> yaw;
 
 
                 //traj.points[0].positions[1] = traj.points[0].positions[1]+0.01;
-              pose.id = 1;
-                pose.position.x = 0.8*sin(2*3.14f*f*t);
-                pose.position.y = 0.8*cos(2*3.14f*f*t);
-                pose.position.z = 0.4;
+                pose.id = 0;
+                pose.position.x = x;
+                pose.position.y = y;
+                pose.position.z = z;
 
-                t++;
+                pose.orientation.roll=roll;
+                pose.orientation.roll=pitch;
+                pose.orientation.yaw=yaw;
+
+
 
 
 

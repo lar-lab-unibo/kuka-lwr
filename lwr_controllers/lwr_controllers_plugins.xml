@@ -1,77 +1,81 @@
 <library path="lib/liblwr_controllers">
-    
-  <class name="lwr_controllers/GravityCompensation" type="lwr_controllers::GravityCompensation" base_class_type="controller_interface::ControllerBase">
+
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/GravityCompensation" type="lwr_controllers::GravityCompensation">
     <description>
       Safe gravity compensation.
     </description>
   </class>
 
-  <class name="lwr_controllers/JointImpedanceController" type="lwr_controllers::JointImpedanceController" base_class_type="controller_interface::ControllerBase">
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/JointImpedanceController" type="lwr_controllers::JointImpedanceController">
     <description>
       The JointImpedanceController tracks effort commands. It expects a EffortJointInterface type of hardware interface.
     </description>
   </class>
 
-  <class name="lwr_controllers/InverseDynamicsController" type="lwr_controllers::InverseDynamicsController" base_class_type="controller_interface::ControllerBase">
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/InverseDynamicsController" type="lwr_controllers::InverseDynamicsController">
     <description>
       The InverseDynamicsController compensates for inertial, gravitational, and coriolis effects on a robot.
     </description>
-  </class> 
+  </class>
 
-  <class name="lwr_controllers/ComputedTorqueController" type="lwr_controllers::ComputedTorqueController" base_class_type="controller_interface::ControllerBase">
-    <description>
-      Info...
-    </description>
-  </class> 
-
-  <class name="lwr_controllers/OneTaskInverseKinematics" type="lwr_controllers::OneTaskInverseKinematics" base_class_type="controller_interface::ControllerBase">
-    <description>
-      Info...
-    </description>
-  </class> 
-
-  <class name="lwr_controllers/MultiTaskPriorityInverseKinematics" type="lwr_controllers::MultiTaskPriorityInverseKinematics" base_class_type="controller_interface::ControllerBase">
-    <description>
-      Info...
-    </description>
-  </class> 
-
-  <class name="lwr_controllers/MultiTaskPriorityInverseDynamics" type="lwr_controllers::MultiTaskPriorityInverseDynamics" base_class_type="controller_interface::ControllerBase">
-    <description>
-      Info...
-    </description>
-  </class>   
-
-  <class name="lwr_controllers/OneTaskInverseDynamicsJL" type="lwr_controllers::OneTaskInverseDynamicsJL" base_class_type="controller_interface::ControllerBase">
-    <description>
-      Info...
-    </description>
-  </class> 
-
-  <class name="lwr_controllers/MinimumEffortInverseDynamics" type="lwr_controllers::MinimumEffortInverseDynamics" base_class_type="controller_interface::ControllerBase">
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/ComputedTorqueController" type="lwr_controllers::ComputedTorqueController">
     <description>
       Info...
     </description>
   </class>
 
-  <class name="lwr_controllers/BacksteppingController" type="lwr_controllers::BacksteppingController" base_class_type="controller_interface::ControllerBase">
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/OneTaskInverseKinematics" type="lwr_controllers::OneTaskInverseKinematics">
     <description>
       Info...
     </description>
   </class>
 
-  <class name="lwr_controllers/DynamicSlidingModeController" type="lwr_controllers::DynamicSlidingModeController" base_class_type="controller_interface::ControllerBase">
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/FullControlSimple" type="lwr_controllers::FullControlSimple">
     <description>
       Info...
     </description>
   </class>
 
-  <class name="lwr_controllers/DynamicSlidingModeControllerTaskSpace" type="lwr_controllers::DynamicSlidingModeControllerTaskSpace" base_class_type="controller_interface::ControllerBase">
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/MultiTaskPriorityInverseKinematics" type="lwr_controllers::MultiTaskPriorityInverseKinematics">
     <description>
       Info...
     </description>
   </class>
 
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/MultiTaskPriorityInverseDynamics" type="lwr_controllers::MultiTaskPriorityInverseDynamics">
+    <description>
+      Info...
+    </description>
+  </class>
 
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/OneTaskInverseDynamicsJL" type="lwr_controllers::OneTaskInverseDynamicsJL">
+    <description>
+      Info...
+    </description>
+  </class>
+
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/MinimumEffortInverseDynamics" type="lwr_controllers::MinimumEffortInverseDynamics">
+    <description>
+      Info...
+    </description>
+  </class>
+
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/BacksteppingController" type="lwr_controllers::BacksteppingController">
+    <description>
+      Info...
+    </description>
+  </class>
+
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/DynamicSlidingModeController" type="lwr_controllers::DynamicSlidingModeController">
+    <description>
+      Info...
+    </description>
+  </class>
+
+  <class base_class_type="controller_interface::ControllerBase" name="lwr_controllers/DynamicSlidingModeControllerTaskSpace" type="lwr_controllers::DynamicSlidingModeControllerTaskSpace">
+    <description>
+      Info...
+    </description>
+  </class>
 
 </library>

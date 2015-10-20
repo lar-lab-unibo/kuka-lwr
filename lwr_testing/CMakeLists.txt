@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(lwr_testing)
-
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -11,10 +10,15 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   tf
   tf_conversions
-  message_generation
   message_runtime
   pcl_ros
   kdl_parser
+  lwr_controllers
+)
+
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  ${CMAKE_INCLUDE_PATH}
 )
 
 
@@ -51,6 +55,7 @@ catkin_package(
    std_msgs
 )
 
+
 #SOPHUS
 #set(SOPHUS_INCLUDE_DIRS /usr/local/include/sophus)
 #include_directories(${SOPHUS_INCLUDE_DIRS})
@@ -59,23 +64,14 @@ catkin_package(
 # find_package(Boost REQUIRED COMPONENTS system)
 
 
-
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
 #    MarkerImageService.srv
 # )
 
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES lar_visionsystem
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
-  #  DEPENDS
-
-)
-
 
 # lwr hw fri node
 add_executable(lwr_test  src/lwr_test.cpp)
 target_link_libraries(lwr_test ${catkin_LIBRARIES})
+#add_dependencies(lwr_test lwr_testing_generate_messages_cpp)

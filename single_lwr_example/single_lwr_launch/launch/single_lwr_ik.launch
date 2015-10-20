@@ -15,7 +15,7 @@
 
     <arg name="t1_limits" default="false"/>
     <arg name="controllers" default="joint_trajectory_controller"/>
-    <arg name="stopped_controllers" default=" one_task_inverse_kinematics"/>
+    <arg name="stopped_controllers" default=" full_control_simple"/>
 
 	<!-- in case you want to load moveit from here, it might be hard with the real HW though -->
 	<arg name="load_moveit" default="false"/>
@@ -101,8 +101,7 @@
 
 		<!-- spawn only desired controllers in current namespace -->
 		<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--stopped  joint_state_controller $(arg controllers)"/>
-
-		<node name="controller_stopper" pkg="controller_manager" type="spawner" args="$(arg stopped_controllers)" />
+		<node name="controller_stopper" pkg="controller_manager" type="spawner" args="full_control_simple" />
 	</group>
 
 </launch>

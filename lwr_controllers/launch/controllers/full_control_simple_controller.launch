@@ -1,7 +1,7 @@
 <launch>
 
 	<include file="$(find lwr_controllers)/launch/load_controller.launch">
-		<arg name="controller" value="OneTaskInverseKinematics" />
+		<arg name="controller" value="FullControlSimple" />
 	</include>
 
 </launch>
