@@ -127,8 +127,10 @@ pose_cb(const lwr_controllers::PoseRPY& pose) {
     T(1, 3) = pose.position.y;
     T(2, 3) = pose.position.z;
 
-    T = T*Robot_Base;
-    T = T*EE;
+    T = Robot_Base*T;
+    T = T* EE;
+
+
 
 
 }
@@ -188,6 +190,7 @@ ros::Subscriber sub_pose;
 
 lwr_controllers::PoseRPY pose;
 sensor_msgs::JointState joint_msg;
+char mode = 'j';
 
 void updateCommands() {
 
@@ -205,7 +208,7 @@ void updateCommands() {
     while (true) {
         cout << "Command: ";
         cin >> c;
-
+        mode = c;
         if (c == 'q') break;
 
 
@@ -255,18 +258,20 @@ void updateCommands() {
 
         } else if (c == 'j') {
             float* j = new float[7];
-            for (int i = 0; i < 7; i++) {
-                cin >> j[i];
-            }
+            //            for (int i = 0; i < 7; i++) {
+            cin >> joint_msg.position[0];
+            //            }
 
-            joint_msg.position[0] = x;
-            joint_msg.position[1] = y;
-            joint_msg.position[2] = z;
-            joint_msg.position[3] = roll;
-            joint_msg.position[4] = pitch;
-            joint_msg.position[5] = yaw;
+
+            //            joint_msg.position[0] = 0;
+            joint_msg.position[1] = 1.57;
+            joint_msg.position[2] = 0;
+            joint_msg.position[3] = 0.9;
+            joint_msg.position[4] = 0;
+            joint_msg.position[5] = -1.8;
             joint_msg.position[6] = 0;
-            joints_publisher.publish(joint_msg);
+
+            //            joints_publisher.publish(joint_msg);
         }
     }
 }
@@ -295,7 +300,7 @@ main(int argc, char** argv) {
 
     transformMatrixT(0, 0, 2.0f, 0, M_PI, 0, Robot_Base);
     rotationMatrixT(0, 0, -M_PI / 2, EE);
-    transformMatrixT(0, 0, 0.5f, 0, 0, 0, Target);
+    transformMatrixT(0, 0, 1.0f, 0, 0, 0, Target);
 
 
     boost::filesystem::create_directory(save_folder);
@@ -322,10 +327,16 @@ main(int argc, char** argv) {
     joint_msg.name[6] = "lwr_6_joint";
     joint_msg.position.resize(7);
 
+    joint_msg.position[0] = 0;
+    joint_msg.position[1] = 1.57;
+    joint_msg.position[2] = 0;
+    joint_msg.position[3] = 0.9;
+    joint_msg.position[4] = 0;
+    joint_msg.position[5] = -1.8;
+    joint_msg.position[6] = 0;
 
-    for (int i = 0; i < 7; i++) {
-        joint_msg.position[0] = 0;
-    }
+
+    mode='j';
 
     // Spin
     while (nh.ok() && !viewer->wasStopped()) {
@@ -337,7 +348,11 @@ main(int argc, char** argv) {
 
 
         //joints_publisher.publish(traj);
-        pose_publisher.publish(pose);
+        if (mode == 'c') {
+            pose_publisher.publish(pose);
+        } else if (mode == 'j') {
+            joints_publisher.publish(joint_msg);
+        }
         viewer->spinOnce();
         ros::spinOnce();
     }
