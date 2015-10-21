@@ -30,3 +30,6 @@ Build
 # Avoid FRILibrary
 FRILibrary
 fril.zip
+
+#Netbeans
+nbproject/
