@@ -105,8 +105,9 @@ namespace lwr_controllers
             }
 
             // integrating q_dot -> getting q (Euler method)
-            for (int i = 0; i < joint_handles_.size(); i++)
+            for (int i = 0; i < joint_handles_.size(); i++){
                 joint_des_states_.q(i) += period.toSec()*joint_des_states_.qdot(i);
+            }
 
             // joint limits saturation
             for (int i =0;  i < joint_handles_.size(); i++)

@@ -27,7 +27,15 @@
 <!-- LAUNCH IMPLEMENTATION -->
 
 <!-- the urdf/sdf parameter -->
-  <param command="$(find xacro)/xacro.py $(find single_lwr_robot)/robot/$(arg robot_name).urdf.xacro" name="robot_description"/>
+<!--<param command="$(find xacro)/xacro.py $(find single_lwr_robot)/robot/$(arg robot_name).urdf.xacro" name="robot_description"/>-->
+  <param command="$(find xacro)/xacro.py $(find lwr_testing)/descriptions/robot_with_gripper.urdf.xacro" name="robot_description"/>
+
+
+  <rosparam command="load" file="$(find trimod_gripper)/controllers/controllers.yaml"/>
+<!--  <node args="trimod_joint_state_publisher" name="trimod_joint_state_publisher_spawner" ns="trimod" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>-->
+  <node args="trimod_joint_trajectory_controller" name="trimod_joint_state_controller_spawner" ns="trimod" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>
+
+
 
 <!-- joint and robot state publishers of the full robot description -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
@@ -100,8 +108,8 @@
     </group>
 
 <!-- spawn only desired controllers in current namespace -->
-    <node args="--stopped joint_state_controller $(arg controllers)" name="controller_spawner" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>
     <node args="full_control_simple" name="controller_stopper" pkg="controller_manager" type="spawner"/>
   </group>
+
 
 </launch>

@@ -114,8 +114,9 @@ void FullControlSimple::update(const ros::Time& time, const ros::Duration& perio
                         }
 
                         // integrating q_dot -> getting q (Euler method)
-                        for (int i = 0; i < joint_handles_.size(); i++)
+                        for (int i = 0; i < joint_handles_.size(); i++) {
                                 joint_des_states_.q(i) += period.toSec()*joint_des_states_.qdot(i);
+                        }
 
                 }else if(control_mode==LWR_CONTROLLERS_FULL_CONTROL_SIMPLE_MODE_JOINTS) {
 
@@ -142,27 +143,33 @@ void FullControlSimple::update(const ros::Time& time, const ros::Duration& perio
                 }
         }
 
+
         // set controls for joints
         for (int i = 0; i < joint_handles_.size(); i++)
         {
                 joint_handles_[i].setCommand(joint_des_states_.q(i));
         }
 
+
+
         // Updating current state
-        fk_pos_solver_->JntToCart(joint_msr_states_.q, x_);
+
+        current_pose_.id =fk_pos_solver_->JntToCart(joint_des_states_.q, x_);
 
         x_.M.GetRPY(
-          current_pose_.orientation.roll,
-          current_pose_.orientation.pitch,
-          current_pose_.orientation.yaw
-        );
+                current_pose_.orientation.roll,
+                current_pose_.orientation.pitch,
+                current_pose_.orientation.yaw
+                );
         current_pose_.position.x = x_.p(0);
         current_pose_.position.y = x_.p(1);
         current_pose_.position.z = x_.p(2);
 
-        current_pose_.id = 0;
         pub_current_pose.publish(current_pose_);
         ros::spinOnce();
+
+
+
 }
 
 void FullControlSimple::command(const lwr_controllers::PoseRPY::ConstPtr &msg)

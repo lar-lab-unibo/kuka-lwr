@@ -11,7 +11,7 @@
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${name}_0_joint">
 				<hardwareInterface>${Interface10}</hardwareInterface>
-				<hardwareInterface>${Interface30}</hardwareInterface>
+				<!--<hardwareInterface>${Interface30}</hardwareInterface>-->
 			</joint>
 			<actuator name="${name}_0_motor">
 				<mechanicalReduction>1</mechanicalReduction>
@@ -22,7 +22,7 @@
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${name}_1_joint">
 				<hardwareInterface>${Interface10}</hardwareInterface>
-				<hardwareInterface>${Interface30}</hardwareInterface>
+				<!--<hardwareInterface>${Interface30}</hardwareInterface>-->
 			</joint>
 			<actuator name="${name}_1_motor">
 				<mechanicalReduction>1</mechanicalReduction>
@@ -33,7 +33,7 @@
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${name}_2_joint">
 				<hardwareInterface>${Interface10}</hardwareInterface>
-				<hardwareInterface>${Interface30}</hardwareInterface>
+				<!--<hardwareInterface>${Interface30}</hardwareInterface>-->
 			</joint>
 			<actuator name="${name}_2_motor">
 				<mechanicalReduction>1</mechanicalReduction>
@@ -44,7 +44,7 @@
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${name}_3_joint">
 				<hardwareInterface>${Interface10}</hardwareInterface>
-				<hardwareInterface>${Interface30}</hardwareInterface>
+				<!--<hardwareInterface>${Interface30}</hardwareInterface>-->
 			</joint>
 			<actuator name="${name}_3_motor">
 				<mechanicalReduction>1</mechanicalReduction>
@@ -55,7 +55,7 @@
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${name}_4_joint">
 				<hardwareInterface>${Interface10}</hardwareInterface>
-				<hardwareInterface>${Interface30}</hardwareInterface>
+				<!--<hardwareInterface>${Interface30}</hardwareInterface>-->
 			</joint>
 			<actuator name="${name}_4_motor">
 				<mechanicalReduction>1</mechanicalReduction>
@@ -66,7 +66,7 @@
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${name}_5_joint">
 				<hardwareInterface>${Interface10}</hardwareInterface>
-				<hardwareInterface>${Interface30}</hardwareInterface>
+				<!--<hardwareInterface>${Interface30}</hardwareInterface>-->
 			</joint>
 			<actuator name="${name}_5_motor">
 				<mechanicalReduction>1</mechanicalReduction>
@@ -77,7 +77,7 @@
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${name}_6_joint">
 				<hardwareInterface>${Interface10}</hardwareInterface>
-				<hardwareInterface>${Interface30}</hardwareInterface>
+				<!--<hardwareInterface>${Interface30}</hardwareInterface>-->
 			</joint>
 			<actuator name="${name}_6_motor">
 				<mechanicalReduction>1</mechanicalReduction>
