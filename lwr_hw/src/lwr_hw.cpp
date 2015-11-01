@@ -89,14 +89,14 @@ namespace lwr_hw
     return;
   }
 
-  void LWRHW::registerInterfaces(const urdf::Model *const urdf_model, 
+  void LWRHW::registerInterfaces(const urdf::Model *const urdf_model,
                      std::vector<transmission_interface::TransmissionInfo> transmissions)
   {
 
     // Check that this transmission has one joint
     if( transmissions.empty() )
     {
-      std::cout << "lwr_hw: " << "There are no transmission in this robot, all are non-driven joints? " 
+      std::cout << "lwr_hw: " << "There are no transmission in this robot, all are non-driven joints? "
         << std::endl;
       return;
     }
@@ -157,18 +157,18 @@ namespace lwr_hw
                                                                    &joint_stiffness_[j], &joint_stiffness_[j], &joint_stiffness_[j]),
                                                        &joint_stiffness_command_[j]);
       position_interface_.registerHandle(joint_handle_stiffness);
-   
+
      // velocity command handle, recall it is fake, there is no actual velocity interface
       hardware_interface::JointHandle joint_handle_velocity;
       joint_handle_velocity = hardware_interface::JointHandle(state_interface_.getHandle(joint_names_[j]),
           &joint_velocity_command_[j]);
 
-      registerJointLimits(joint_names_[j], 
-                          joint_handle_effort, 
+      registerJointLimits(joint_names_[j],
+                          joint_handle_effort,
                           joint_handle_position,
                           joint_handle_velocity,
                           joint_handle_stiffness,
-                          urdf_model, 
+                          urdf_model,
                           &joint_lower_limits_[j], &joint_upper_limits_[j],
                           &joint_lower_limits_stiffness_[j],
                           &joint_upper_limits_stiffness_[j],
@@ -190,7 +190,7 @@ namespace lwr_hw
                            const hardware_interface::JointHandle& joint_handle_velocity,
                            const hardware_interface::JointHandle& joint_handle_stiffness,
                            const urdf::Model *const urdf_model,
-                           double *const lower_limit, double *const upper_limit, 
+                           double *const lower_limit, double *const upper_limit,
                            double *const lower_limit_stiffness, double *const upper_limit_stiffness,
                            double *const effort_limit)
   {
@@ -287,7 +287,7 @@ namespace lwr_hw
     std::vector<transmission_interface::TransmissionInfo> transmissions;
 
     // Only *standard* transmission_interface are parsed
-    transmission_interface::TransmissionParser::parse(urdf_string, transmissions);
+    parse(urdf_string, transmissions);
 
     // Now iterate and save only transmission from this robot
     for (int j = 0; j < n_joints_; ++j)
@@ -322,10 +322,10 @@ namespace lwr_hw
         return false;
     }
 
-    std::cout << "LWR kinematic successfully parsed with " 
-              << kdl_tree.getNrOfJoints() 
-              << " joints, and " 
-              << kdl_tree.getNrOfJoints() 
+    std::cout << "LWR kinematic successfully parsed with "
+              << kdl_tree.getNrOfJoints()
+              << " joints, and "
+              << kdl_tree.getNrOfJoints()
               << " segments." << std::endl;
 
     // Get the info from parameters
@@ -333,7 +333,7 @@ namespace lwr_hw
     ros::param::get(std::string("/") + robot_namespace_ + std::string("/root"), root_name);
     if( root_name.empty() )
       root_name = kdl_tree.getRootSegment()->first; // default
-    
+
     std::string tip_name;
     ros::param::get(std::string("/") + robot_namespace_ + std::string("/tip"), tip_name);
     if( root_name.empty() )
@@ -366,7 +366,7 @@ namespace lwr_hw
   bool LWRHW::canSwitch(const std::list<hardware_interface::ControllerInfo> &start_list, const std::list<hardware_interface::ControllerInfo> &stop_list) const
   {
     std::vector<ControlStrategy> desired_strategies;
-    
+
     for ( std::list<hardware_interface::ControllerInfo>::const_iterator it = start_list.begin(); it != start_list.end(); ++it )
     {
       // If any of the controllers in the start list works on a velocity interface, the switch can't be done.
@@ -398,7 +398,7 @@ namespace lwr_hw
 
     if( desired_strategies.size() > 1 )
     {
-      std::cout << "OOPS! Currently we are using the JointCommandInterface to switch mode, this is not strictly correct. " 
+      std::cout << "OOPS! Currently we are using the JointCommandInterface to switch mode, this is not strictly correct. "
                 << "This is temporary until a joint_mode_controller is available (so you can have different interfaces available in different modes)"
                 << "Having said this, we do not support more than one controller that ones to act on any given JointCommandInterface"
                 << "and we can't switch"
@@ -459,6 +459,221 @@ namespace lwr_hw
     }
   }
 
-  
-  
+
+  bool LWRHW::parse(const std::string& urdf, std::vector<transmission_interface::TransmissionInfo>& transmissions)
+  {
+    // initialize TiXmlDocument doc with a string
+    TiXmlDocument doc;
+    if (!doc.Parse(urdf.c_str()) && doc.Error())
+    {
+      ROS_ERROR("Can't parse transmissions. Invalid robot description.");
+      return false;
+    }
+
+    // Find joints in transmission tags
+    TiXmlElement *root = doc.RootElement();
+
+    // Constructs the transmissions by parsing custom xml.
+    TiXmlElement *trans_it = NULL;
+    for (trans_it = root->FirstChildElement("lwrtransmission"); trans_it;
+         trans_it = trans_it->NextSiblingElement("lwrtransmission"))
+    {
+      transmission_interface::TransmissionInfo transmission;
+
+      // Transmission name
+      if(trans_it->Attribute("name"))
+      {
+        transmission.name_ = trans_it->Attribute("name");
+        if (transmission.name_.empty())
+        {
+          ROS_ERROR_STREAM_NAMED("parser","Empty name attribute specified for transmission.");
+          continue;
+        }
+      }
+      else
+      {
+        ROS_ERROR_STREAM_NAMED("parser","No name attribute specified for transmission.");
+        continue;
+      }
+      ROS_INFO("@@@@@@@@@@òò CUSTOM PARSE!! %s",transmission.name_.c_str());
+
+      // Transmission type
+      TiXmlElement *type_child = trans_it->FirstChildElement("type");
+      if(!type_child)
+      {
+        ROS_ERROR_STREAM_NAMED("parser","No type element found in transmission '"
+          << transmission.name_ << "'.");
+        continue;
+      }
+      if (!type_child->GetText())
+      {
+        ROS_ERROR_STREAM_NAMED("parser","Skipping empty type element in transmission '"
+                               << transmission.name_ << "'.");
+        continue;
+      }
+      transmission.type_ = type_child->GetText();
+
+      // Load joints
+      if(!parseJoints(trans_it, transmission.joints_))
+      {
+        ROS_ERROR_STREAM_NAMED("parser","Failed to load joints for transmission '"
+          << transmission.name_ << "'.");
+        continue;
+      }
+
+      // Load actuators
+      if(!parseActuators(trans_it, transmission.actuators_))
+      {
+        ROS_ERROR_STREAM_NAMED("parser","Failed to load actuators for transmission '"
+          << transmission.name_ << "'.");
+        continue;
+      }
+
+      // Save loaded transmission
+      transmissions.push_back(transmission);
+
+    } // end for <transmission>
+
+    if( transmissions.empty() )
+    {
+      ROS_DEBUG_STREAM_NAMED("parser", "No valid transmissions found.");
+    }
+
+    return true;
+  }
+
+  bool LWRHW::parseJoints(TiXmlElement *trans_it, std::vector<transmission_interface::JointInfo>& joints)
+  {
+    // Loop through each available joint
+    TiXmlElement *joint_it = NULL;
+    for (joint_it = trans_it->FirstChildElement("joint"); joint_it;
+         joint_it = joint_it->NextSiblingElement("joint"))
+    {
+      // Create new joint
+      transmission_interface::JointInfo joint;
+
+      // Joint name
+      if(joint_it->Attribute("name"))
+      {
+        joint.name_ = joint_it->Attribute("name");
+        if (joint.name_.empty())
+        {
+          ROS_ERROR_STREAM_NAMED("parser","Empty name attribute specified for joint.");
+          continue;
+        }
+      }
+      else
+      {
+        ROS_ERROR_STREAM_NAMED("parser","No name attribute specified for joint.");
+        return false;
+      }
+
+      // Hardware interfaces (required)
+      TiXmlElement *hw_iface_it = NULL;
+      for (hw_iface_it = joint_it->FirstChildElement("hardwareInterface"); hw_iface_it;
+           hw_iface_it = hw_iface_it->NextSiblingElement("hardwareInterface"))
+      {
+        if(!hw_iface_it) {continue;}
+        if (!hw_iface_it->GetText())
+        {
+          ROS_DEBUG_STREAM_NAMED("parser","Skipping empty hardware interface element in joint '"
+                                 << joint.name_ << "'.");
+          continue;
+        }
+        const std::string hw_iface_name = hw_iface_it->GetText();
+        joint.hardware_interfaces_.push_back(hw_iface_name);
+      }
+      if (joint.hardware_interfaces_.empty())
+      {
+        ROS_ERROR_STREAM_NAMED("parser","No valid hardware interface element found in joint '"
+          << joint.name_ << "'.");
+        continue;
+      }
+
+      // Joint xml element
+      std::stringstream ss;
+      ss << *joint_it;
+      joint.xml_element_ = ss.str();
+
+      // Add joint to vector
+      joints.push_back(joint);
+    }
+
+    if(joints.empty())
+    {
+      ROS_DEBUG_NAMED("parser","No valid joint element found.");
+      return false;
+    }
+
+    return true;
+  }
+
+  bool LWRHW::parseActuators(TiXmlElement *trans_it, std::vector<transmission_interface::ActuatorInfo>& actuators)
+  {
+    // Loop through each available actuator
+    TiXmlElement *actuator_it = NULL;
+    for (actuator_it = trans_it->FirstChildElement("actuator"); actuator_it;
+         actuator_it = actuator_it->NextSiblingElement("actuator"))
+    {
+      // Create new actuator
+      transmission_interface::ActuatorInfo actuator;
+
+      // Actuator name
+      if(actuator_it->Attribute("name"))
+      {
+        actuator.name_ = actuator_it->Attribute("name");
+        if (actuator.name_.empty())
+        {
+          ROS_ERROR_STREAM_NAMED("parser","Empty name attribute specified for actuator.");
+          continue;
+        }
+      }
+      else
+      {
+        ROS_ERROR_STREAM_NAMED("parser","No name attribute specified for actuator.");
+        return false;
+      }
+
+      // Hardware interfaces (optional)
+      TiXmlElement *hw_iface_it = NULL;
+      for (hw_iface_it = actuator_it->FirstChildElement("hardwareInterface"); hw_iface_it;
+           hw_iface_it = hw_iface_it->NextSiblingElement("hardwareInterface"))
+      {
+        if(!hw_iface_it) {continue;}
+        if (!hw_iface_it->GetText())
+        {
+          ROS_DEBUG_STREAM_NAMED("parser","Skipping empty hardware interface element in actuator '"
+                                 << actuator.name_ << "'.");
+          continue;
+        }
+        const std::string hw_iface_name = hw_iface_it->GetText();
+        actuator.hardware_interfaces_.push_back(hw_iface_name);
+      }
+      if (actuator.hardware_interfaces_.empty())
+      {
+        ROS_DEBUG_STREAM_NAMED("parser","No valid hardware interface element found in actuator '"
+          << actuator.name_ << "'.");
+        // continue; // NOTE: Hardware interface is optional, so we keep on going
+      }
+
+      // Actuator xml element
+      std::stringstream ss;
+      ss << *actuator_it;
+      actuator.xml_element_ = ss.str();
+
+      // Add actuator to vector
+      actuators.push_back(actuator);
+    }
+
+    if(actuators.empty())
+    {
+      ROS_DEBUG_NAMED("parser","No valid actuator element found.");
+      return false;
+    }
+
+    return true;
+  }
+
+
+
 }
