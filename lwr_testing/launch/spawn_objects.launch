@@ -1,0 +1,9 @@
+<launch>
+
+  <param command="$(find xacro)/xacro.py $(find gazebo_worlds)/objects/table.urdf.xacro" name="table_description"/>
+  <node args="-urdf -param table_description -z 0.05 -x 0 -y 0 -model table_model" name="spawn_table" output="screen" pkg="gazebo_ros" respawn="false" type="spawn_model"/>
+
+  <param command="$(find xacro)/xacro.py $(find gazebo_worlds)/objects/box.urdf" name="can_description"/>
+  <node args="-urdf -param can_description -model can_model" name="spawn_can" output="screen" pkg="gazebo_ros" respawn="false" type="spawn_model"/>
+
+</launch>
