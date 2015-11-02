@@ -190,14 +190,71 @@ ros::Subscriber sub_pose;
 
 lwr_controllers::PoseRPY pose;
 sensor_msgs::JointState joint_msg;
+std::vector<lwr_controllers::PoseRPY> poses;
+
 char mode = 'j';
+
+void initPoses(){
+    lwr_controllers::PoseRPY p1;
+    p1.id=0;
+    p1.position.x = -0.2;
+    p1.position.y =  0.2;
+    p1.position.z = 0.7;
+    p1.orientation.roll = 1.57;
+    p1.orientation.pitch = 0;
+    p1.orientation.yaw = 0;
+
+
+    lwr_controllers::PoseRPY p2;
+    p2.position.x = -0.2;
+    p2.position.y =  0.2;
+    p2.position.z = 0.9;
+    p2.orientation.roll = 1.57;
+    p2.orientation.pitch = 0;
+    p2.orientation.yaw = 0;
+    p2.id=0;
+
+    lwr_controllers::PoseRPY p3;
+    p3.position.x = -0.2;
+    p3.position.y =  0.12;
+    p3.position.z = 0.9;
+    p3.orientation.roll = 1.57;
+    p3.orientation.pitch = 0;
+    p3.orientation.yaw = 0;
+    p3.id=0;
+
+    lwr_controllers::PoseRPY p4;
+    p4.position.x = -0.2;
+    p4.position.y =  0.2;
+    p4.position.z = 0.65;
+    p4.orientation.roll = 0;
+    p4.orientation.pitch = 0;
+    p4.orientation.yaw = 0;
+    p4.id=0;
+
+    lwr_controllers::PoseRPY p5;
+    p5.position.x = -0.2;
+    p5.position.y =  0.2;
+    p5.position.z = 0.85;
+    p5.orientation.roll = 0;
+    p5.orientation.pitch = 0;
+    p5.orientation.yaw = 0;
+    p5.id=0;
+
+    poses.push_back(p1);
+    poses.push_back(p2);
+    poses.push_back(p3);
+    poses.push_back(p4);
+    poses.push_back(p5);
+
+}
 
 void updateCommands() {
 
 
 
 
-
+        initPoses();
 
         float x = 0.5f, y = 0.5f, z = 0.5f, roll = 0.0f, pitch = 0.0f, yaw = 0.0f;
         char c;
@@ -212,7 +269,31 @@ void updateCommands() {
                 if (c == 'q') break;
 
 
-
+                if (c == '1') {
+                  pose = poses[0];
+                  mode = 'c';
+                  std::cout<<pose<<std::endl;
+                }
+                if (c == '2') {
+                  pose = poses[1];
+                  mode = 'c';
+                  std::cout<<pose<<std::endl;
+                }
+                if (c == '3') {
+                  pose = poses[2];
+                  mode = 'c';
+                  std::cout<<pose<<std::endl;
+                }
+                if (c == '4') {
+                  pose = poses[3];
+                  mode = 'c';
+                  std::cout<<pose<<std::endl;
+                }
+                if (c == '5') {
+                  pose = poses[4];
+                  mode = 'c';
+                  std::cout<<pose<<std::endl;
+                }
 
                 //traj.points[0].positions[1] = traj.points[0].positions[1]+0.01;
                 if (c == 'a') {

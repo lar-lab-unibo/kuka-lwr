@@ -50,11 +50,13 @@
   </link>
   <gazebo reference="table_top_link">
     <material>Gazebo/Wood</material>
-    <mu1>50.0</mu1>
-    <mu2>50.0</mu2>
+    <mu1>10.0</mu1>
+    <mu2>10.0</mu2>
     <kp>1000000.0</kp>
     <kd>1.0</kd>
+    <turnGravityOff>false</turnGravityOff>
   </gazebo>
+
 
   <joint name="leg1_joint" type="fixed" >
     <parent link="table_top_link" />

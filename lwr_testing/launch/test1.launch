@@ -32,7 +32,10 @@
 
   <rosparam command="load" file="$(find trimod_gripper)/controllers/controllers.yaml"/>
 <!--  <node args="trimod_joint_state_publisher" name="trimod_joint_state_publisher_spawner" ns="trimod" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>-->
-  <node args="trimod_joint_trajectory_controller" name="trimod_joint_state_controller_spawner" ns="trimod" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>
+
+  <!-- TRIMOD CONTROLLERS -->
+  <!--<node args="trimod_joint_trajectory_controller" name="trimod_joint_state_controller_spawner" ns="trimod" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>-->
+  <node args="trimod_joint_trajectory_effort_controller" name="trimod_joint_state_controller_spawner" ns="trimod" output="screen" pkg="controller_manager" respawn="false" type="spawner"/>
 
 <!-- joint and robot state publishers of the full robot description -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
