@@ -249,7 +249,7 @@ void initPoses(){
 
 }
 
-void updateCommands() {
+void updateJoints() {
 
 
 
@@ -417,7 +417,7 @@ main(int argc, char** argv) {
 
         // Spin
 
-        boost::thread updateTFsThread(updateCommands);
+        boost::thread updateTFsThread(updateJoints);
 
         joint_msg.name.resize(7);
         joint_msg.name[0] = "lwr_0_joint";
