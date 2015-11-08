@@ -5,4 +5,5 @@
 
   <param command="$(find xacro)/xacro.py $(find lwr_testing)/objects/box.urdf" name="can_description"/>
   <node args="-urdf -param can_description -model can_model -z 1.05 -x 0.2 -y 0.21" name="spawn_can" output="screen" pkg="gazebo_ros" respawn="false" type="spawn_model"/>
+
 </launch>
